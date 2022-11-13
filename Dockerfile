@@ -56,3 +56,5 @@ USER dokku
 
 # Run the server and point to the created directory
 CMD ["server", "--address", ":5000", "--console-address", ":9001", "/data"]
+
+ADD nginx.conf.sigil /
