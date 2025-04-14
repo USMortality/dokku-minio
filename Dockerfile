@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8
 
-ARG MINIO_VERSION="RELEASE.2023-08-16T20-17-30Z"
+ARG MINIO_VERSION="RELEASE.2025-04-08T15-41-24Z"
 ARG TARGETARCH="amd64"
 
 LABEL name="MinIO" \
@@ -20,7 +20,6 @@ ENV MINIO_ACCESS_KEY_FILE=access_key \
     MINIO_CONFIG_ENV_FILE=config.env \
     PATH=/opt/bin:$PATH
 
-RUN curl -s -q https://raw.githubusercontent.com/minio/minio/${MINIO_VERSION}/dockerscripts/verify-minio.sh -o /usr/bin/verify-minio.sh
 RUN curl -s -q https://raw.githubusercontent.com/minio/minio/${MINIO_VERSION}/dockerscripts/docker-entrypoint.sh -o /usr/bin/docker-entrypoint.sh
 RUN mkdir -p /licenses
 RUN curl -s -q https://raw.githubusercontent.com/minio/minio/${MINIO_VERSION}/CREDITS -o /licenses/CREDITS
@@ -40,8 +39,6 @@ RUN microdnf clean all
 RUN chmod +x /opt/bin/minio
 RUN chmod +x /opt/bin/mc
 RUN chmod +x /usr/bin/docker-entrypoint.sh
-RUN chmod +x /usr/bin/verify-minio.sh
-RUN /usr/bin/verify-minio.sh
 RUN microdnf clean all
 
 ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
