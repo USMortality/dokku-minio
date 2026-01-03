@@ -1,11 +1,21 @@
 server {
   listen      [::]:80;
   listen      80;
-  server_name s3.mortality.watch s3-gate.mortality.watch; 
+  server_name s3.mortality.watch s3-gate.mortality.watch;
+  return 301 https://$host$request_uri;
+}
+
+server {
+  listen      [::]:443 ssl http2;
+  listen      443 ssl http2;
+  server_name s3.mortality.watch s3-gate.mortality.watch;
+
+  ssl_certificate     /home/dokku/s3-mortality-watch/tls/server.crt;
+  ssl_certificate_key /home/dokku/s3-mortality-watch/tls/server.key;
 
   access_log  /var/log/nginx/s3-mortality-watch-access.log;
   error_log   /var/log/nginx/s3-mortality-watch-error.log;
-  
+
   location    / {
     gzip off;
     gzip_min_length  1100;
@@ -28,7 +38,7 @@ server {
     proxy_set_header X-Forwarded-Port $server_port;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Request-Start $msec;
-    
+
   }
 
   client_max_body_size 100M;
@@ -55,11 +65,21 @@ server {
 server {
   listen      [::]:80;
   listen      80;
-  server_name admin-s3.mortality.watch; 
+  server_name admin-s3.mortality.watch;
+  return 301 https://$host$request_uri;
+}
+
+server {
+  listen      [::]:443 ssl http2;
+  listen      443 ssl http2;
+  server_name admin-s3.mortality.watch;
+
+  ssl_certificate     /home/dokku/s3-mortality-watch/tls/server.crt;
+  ssl_certificate_key /home/dokku/s3-mortality-watch/tls/server.key;
 
   access_log  /var/log/nginx/s3-mortality-watch-access.log;
   error_log   /var/log/nginx/s3-mortality-watch-error.log;
-  
+
   location    / {
     gzip off;
     gzip_min_length  1100;
@@ -82,7 +102,7 @@ server {
     proxy_set_header X-Forwarded-Port $server_port;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Request-Start $msec;
-    
+
   }
 
   client_max_body_size 100M;
